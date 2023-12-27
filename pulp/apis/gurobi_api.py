@@ -142,7 +142,7 @@ class GUROBI(LpSolver):
             """
             self.env = env
             self.env_options = envOptions if envOptions else {}
-            self.manage_env = False if self.env is not None else manageEnv
+            self.manage_env = manageEnv
             self.solver_params = solverParams
 
             self.model = None
@@ -184,9 +184,11 @@ class GUROBI(LpSolver):
             """
             if not self.init_gurobi:
                 return
-            self.model.dispose()
+            
+            if self.model is not None: self.model.dispose()
             if self.manage_env:
-                self.env.dispose()
+                if self.env is not None: self.env.dispose()
+                else: gp.disposeDefaultEnv()
 
         def findSolutionValues(self, lp):
             model = lp.solverModel
