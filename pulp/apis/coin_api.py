@@ -129,6 +129,13 @@ class COIN_CMD(LpSolver_CMD):
             maxNodes=maxNodes,
         )
 
+    def close(self):
+        """
+        A blank function to avoid warnings when switching between licensed solvers
+        and open solvers
+        """
+        return
+    
     def copy(self):
         """Make a copy of self"""
         aCopy = LpSolver_CMD.copy(self)
@@ -392,6 +399,7 @@ class PULP_CBC_CMD(COIN_CMD):
             logPath=None,
             mip_start=False,
             timeMode="elapsed",
+            manageEnv=False # for licensed solvers compatibility
         ):
             if path is not None:
                 raise PulpSolverError("Use COIN_CMD if you want to set a path")
